@@ -70,7 +70,7 @@
 					},
 					create: function(type, entry){
 						var newEntry = {};
-						Object.assign(newEntry, BASE_ARTICLE_DATA, this.generateLiferayEntry(type, entry));
+						Object.assign(newEntry, BASE_ARTICLE_DATA, this._generateLiferayEntry(type, entry));
 						newEntry["p_auth"] = liferayToken;
 						return this.makeCall(SERVICE_URLS.CREATE, newEntry);
 					},
