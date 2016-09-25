@@ -41,7 +41,11 @@
 		.provider("liferay", function(){
 			var types = [];
 			var liferayToken = "";
+			var baseDomain = "";
 			return {
+				setDomain: function(domain){
+					baseDomain = domain;
+				},
 				setAuthToken: function(authtoken){
 					liferayToken = authtoken;
 				},
@@ -56,7 +60,9 @@
 			function createObject($http){
 				var serviceObject = {
 					makeCall: function(urlpart, data ){
-						return $http.post( SERVICE_URLS.BASE + urlpart, data, {
+						console.info(baseDomain + SERVICE_URLS.BASE + urlpart);
+						delete data.p_auth;
+						return $http.post( baseDomain + SERVICE_URLS.BASE + urlpart, data, {
 								headers: {"Content-Type": "application/x-www-form-urlencoded"},
 								transformRequest: function(obj) {
 									var formData = [];
