@@ -1,6 +1,6 @@
 # Angular Liferay JournalArticles
-## Versionnumber 0.1.0 (2016-09-25) Beta
-(***Documentation last update 2016-09-25 08:00***)
+## Versionnumber 0.2.0 (2016-09-30) Beta
+(***Documentation last update 2016-09-30 20:00***)
 
 Angular module for Liferay JournalArticles   
 ![Screenshot Code](https://raw.githubusercontent.com/akumagamo/javascript-liferay-angular-service/master/readme/screenshot_01.png "Screenshot from Code")  
@@ -16,6 +16,8 @@ Angular module for Liferay JournalArticles
 * optimized code
 
 ## Known Bugs
+* if the service returns an error, but sends a 200 HTTP Status code, the error is not detected
+
 ## Usage
 1) load the scripts
 2) configure the structure types
