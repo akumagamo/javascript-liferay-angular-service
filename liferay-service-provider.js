@@ -40,14 +40,10 @@
 	angular.module("LiferayService", [])
 		.provider("liferay", function(){
 			var types = [];
-			var liferayToken = "";
-			var baseDomain = "";
+			var token = "";
 			return {
-				setDomain: function(domain){
-					baseDomain = domain;
-				},
-				setAuthToken: function(authtoken){
-					liferayToken = authtoken;
+				setToken: function(authtoken){
+					token = authtoken;
 				},
 				addTypes: function(type){
 					types.push(type);
@@ -60,10 +56,9 @@
 			function createObject($http){
 				var serviceObject = {
 					makeCall: function(urlpart, data ){
-						console.info(baseDomain + SERVICE_URLS.BASE + urlpart);
-						delete data.p_auth;
-						return $http.post( baseDomain + SERVICE_URLS.BASE + urlpart, data, {
-								headers: {"Content-Type": "application/x-www-form-urlencoded"},
+						console.info( SERVICE_URLS.BASE + urlpart);
+						return $http.post( SERVICE_URLS.BASE + urlpart, data, {
+								headers: {"Content-Type": "application/x-www-form-urlencoded", "Authorization" : "Basic " + token},
 								transformRequest: function(obj) {
 									var formData = [];
 									for(var property in obj){
@@ -77,27 +72,25 @@
 					create: function(type, entry){
 						var newEntry = {};
 						Object.assign(newEntry, BASE_ARTICLE_DATA, this._generateLiferayEntry(type, entry));
-						newEntry["p_auth"] = liferayToken;
 						return this.makeCall(SERVICE_URLS.CREATE, newEntry);
 					},
 					get: function(type, id){
 						var result;
 						if(id!==undefined){
-							result = this.makeCall(SERVICE_URLS.READ, {groupId: type.groupId, articleId: id, p_auth:liferayToken});
+							result = this.makeCall(SERVICE_URLS.READ, {groupId: type.groupId, articleId: id});
 						} else {
-							result = this.makeCall(SERVICE_URLS.READ_ALL, {groupId:type.groupId, folderId:type.folderId, p_auth:liferayToken});
+							result = this.makeCall(SERVICE_URLS.READ_ALL, {groupId:type.groupId, folderId:type.folderId});
 						}
 						return result;
 					},
 					update: function(type, entry, articleid){
 						var newEntry = {};
 						Object.assign(newEntry, BASE_ARTICLE_DATA, this._generateLiferayEntry(type, entry));
-						newEntry["p_auth"] = liferayToken;
 						newEntry["articleId"] = articleid;
 						return this.makeCall(SERVICE_URLS.UPDATE, newEntry);
 					},
 					delete: function(type, id){
-						return this.makeCall(SERVICE_URLS.DELETE, {groupId:type.groupId, articleId: id, articleURL: "", p_auth:liferayToken});
+						return this.makeCall(SERVICE_URLS.DELETE, {groupId:type.groupId, articleId: id, articleURL: ""});
 					},
 					_generateContent: function(entry){
 						var innerData = "";
@@ -160,3 +153,5 @@
 				return serviceObject;
 			}
 	});
+
+	

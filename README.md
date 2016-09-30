@@ -28,7 +28,7 @@ Angular module for Liferay JournalArticles
       (function(app){
         "use strict";	
           app.config(["liferayProvider", function (liferayProvider) {
-            liferayProvider.setAuthToken(Liferay.authToken);
+            liferayProvider.setToken(btoa("newsletterservice:newsletterservice"));
             // setup for each type
             liferayProvider.addTypes({name:"Newsletter", groupId: 24913, folderId: 24927, structureId: 24930, templateId: 24932});
           }])
