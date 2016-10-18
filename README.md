@@ -1,12 +1,13 @@
 # Angular Liferay JournalArticles
-## Versionnumber 0.2.0 (2016-09-30) Beta
-(***Documentation last update 2016-09-30 20:00***)
+## Versionnumber 0.2.0 (2016-10-18) Beta
+(***Documentation last update 2016-10-18 20:30***)
 
-Angular module for Liferay JournalArticles   
+Angular module for Liferay JournalArticles and DDLRecords   
 ![Screenshot Code](https://raw.githubusercontent.com/akumagamo/javascript-liferay-angular-service/master/readme/screenshot_01.png "Screenshot from Code")  
 
 ## Features
-* CRUD Operations
+* CRUD Operations for WebContent
+* CU Operations for DDLRecords
 
 ## WIP    
 
@@ -14,13 +15,16 @@ Angular module for Liferay JournalArticles
 * multilanguage
 * different possible types of structure fields
 * optimized code
+* add Read and Delete Operations for DDLRecords
 
 ## Known Bugs
 * if the service returns an error, but sends a 200 HTTP Status code, the error is not detected
 
 ## Usage
 1) load the scripts
-2) configure the structure types
+2) configure the structure types as:
+    * JournalArticle
+    * DDLRecord
 3) done
 
 ```HTML
@@ -32,13 +36,22 @@ Angular module for Liferay JournalArticles
           app.config(["liferayProvider", function (liferayProvider) {
             liferayProvider.setToken(btoa("newsletterservice:newsletterservice"));
             // setup for each type
-            liferayProvider.addTypes({name:"Newsletter", groupId: 24913, folderId: 24927, structureId: 24930, templateId: 24932});
+            liferayProvider.addTypes({name:"WebContent", groupId: 24913, folderId: 24927, structureId: 24930, templateId: 24932});
+            liferayProvider.addTypes({name:"DDLRecord", type: TYPES.DDLRECORD, groupId: 24913, recordSetId: 25719});
           }])
           .controller("testCtrl", ["$scope", "liferay", 
             function($scope, liferay){
               $scope.messages = "Up and running!";
-              liferay["Newsletter"].get().then(function(){console.info(arguments[0]);});
-              liferay["Newsletter"].get("25004").then(function(){console.info(arguments[0]);});
+              liferay["WebContent"].get().then(function(){console.info(arguments[0]);});
+              liferay["WebContent"].get("25004").then(function(){console.info(arguments[0]);});
+
+              liferay["WebContent"].create({Email:$scope.Email}).then(function(){
+							    console.info( arguments);
+              });
+
+              liferay["DDLRecord"].create({Email:$scope.Email}).then(function(){
+							    console.info( arguments);
+              });
             
           }]);
       }(angular.module("app", ["LiferayService"])));
@@ -55,6 +68,7 @@ https://github.com/akumagamo/javascript-liferay-angular-service.git
      +-+- javascript-liferay-angular-service
        +-+- readme
        | +- screenshot_01.png
+       +- liferay-service-provider.js
        +- readme.md (this document)
        +- LICENSE
 
@@ -66,7 +80,7 @@ Creates a new entry.
 #### get(optional: id)
 Returns single Article or all if no Id is set.
 
-#### update(entry)
+#### update(entry, id)
 Update passed article, creates a new version (Standard functionality).
 
 #### delete(id)
