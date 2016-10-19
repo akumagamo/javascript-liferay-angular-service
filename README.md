@@ -1,4 +1,4 @@
-# Angular Liferay JournalArticles
+# Angular Liferay Service Provider
 ## Versionnumber 0.2.0 (2016-10-18) Beta
 (***Documentation last update 2016-10-18 20:30***)
 
